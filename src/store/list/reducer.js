@@ -13,16 +13,4 @@ export default reducer(initState, {
     return {...state, [action.payload.id]: action.payload.title};
   },
 
-  [types.CLOSE]: (state, action) => {
-    if (state.name) {
-      return {
-        ...state,
-        show: false,
-        result: action.payload.result,
-        resolve: null
-      };
-    } else {
-      return state;
-    }
-  }
 });
