@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export default (arr) => {
   const nodes = {};
   const newArr = [...arr];

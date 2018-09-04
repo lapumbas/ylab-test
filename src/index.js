@@ -7,7 +7,7 @@ import http from "./utils/http.js";
 
 import './theme/style.less';
 
-http.init(store);
+// http.init(store);
 
 ReactDOM.render(
   <Provider store={store}>
