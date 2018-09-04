@@ -1,39 +1,42 @@
 import React, { Component, Fragment } from 'react';
 import _ from 'lodash';
+// import data from '../../data/list.json';
+import dataToTree from '../../utils/data-to-tree';
+import ListItem from '../../components/lists/list-item';
 
-import data from '../../data/list.json';
+const data = [
+  { "_id": 5, "title": "Подпункт 2.2", "parent": 3 },
+  { "_id": 4, "title": "Подпункт 2.1", "parent": 3 },
+  { "_id": 6, "title": "Вложенный подпункт 2.2.1", "parent": 5 },
+  { "_id": 3, "title": "Второй пункт", "parent": 1 },
+  { "_id": 1, "title": "Список", "parent": null },
+  { "_id": 7, "title": "Вложенный подпункт 2.2.2", "parent": 5 },
+  { "_id": 9, "title": "Третий пункт", "parent": 1 },
+  { "_id": 2, "title": "Первый пункт", "parent": 1 },
+  { "_id": 8, "title": "Подпункт 2.3", "parent": 3 },
+  { "_id": 10, "title": "Четвертый пункт", "parent": 1 }
+];
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
 
-  dataToTree(arr) {
-    const nodes = {};
-    return arr
-      .sort((a, b) => {
-        return a._id >= b._id;
-      })
-      .filter(item => {
-        const id = item['_id'];
-        const parentId = item['parent'];
-
-        nodes[id] = _.defaults(item, nodes[id], { children: [] });
-        parentId &&
-          (nodes[parentId] = nodes[parentId] || { children: [] })[
-            'children'
-          ].push(item);
-
-        return !parentId;
-      });
-  }
-
-  componentDidMount() {
-    console.log(this.dataToTree(data));
+  renderList = (arr) => {
+    return arr.map(item => {
+      const children = item.children.length === 0 ? null : <ul>{this.renderList(item.children)}</ul>;
+      return (
+        <ListItem
+          key={item['_id']}
+          id={item['_id']}
+          title={item.title}
+        >
+          {children}
+        </ListItem>
+      );
+    });
   }
 
   render() {
-    return <div>Hi</div>;
+    const arr = dataToTree(data);
+    return <ul>{this.renderList(arr)}</ul>;
   }
 }
 
